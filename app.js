@@ -1,21 +1,13 @@
-require("dotenv").config();
 const express = require("express");
-const connectToDatabase = require("./models/db");
+const dotenv = require("dotenv");
+const cors = require("cors");
 
+dotenv.config();
 const app = express();
-const PORT = process.env.PORT || 5000;
 
-// Connect to Database
-connectToDatabase();
-
-// Middleware
+app.use(cors());
 app.use(express.json());
+app.use(require("./routes/secondChanceItemsRoutes"));
+app.use(require("./routes/searchRoutes"));
 
-// Routes
-app.use("/api/secondchance/items", require("./routes/secondChanceItemsRoutes"));
-app.use("/api/secondchance/search", require("./routes/searchRoutes"));
-
-// Start Server
-app.listen(PORT, () => {
-  console.log(`🚀 Server is running on port ${PORT}`);
-});
+app.listen(5000, () => console.log("🚀 Server running on port 5000"));

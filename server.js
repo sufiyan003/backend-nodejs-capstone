@@ -1,19 +1,17 @@
-require("dotenv").config();
 const express = require("express");
-const connectDB = require("./models/db");
+const { connectDB } = require("./models/db"); // ✅ Ensure correct import
+
+require("dotenv").config();
 
 const app = express();
 
-// Connect to MongoDB (Ensure only once)
+// Connect to MongoDB
 connectDB();
 
 app.use(express.json());
+app.use(require("./routes/secondChanceItemsRoutes"));
+app.use(require("./routes/searchRoutes"));
+app.use(require("./routes/authRoutes"));
 
-// Define Routes
-app.use("/api/secondchance/items", require("./routes/secondChanceItemsRoutes"));
-app.use("/api/secondchance/search", require("./routes/searchRoutes"));
-app.use("/api/secondchance/auth", require("./routes/authRoutes"));
-
-// Start Server
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
